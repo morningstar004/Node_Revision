@@ -1,0 +1,23 @@
+{
+  "name": "node-revision",
+  "version": "1.0.0",
+  "description": "A application to learn the functioning of node.js , express.js and mongoDB",
+  "keywords": [
+    "3032"
+  ],
+  "homepage": "https://github.com/morningstar004/Node_Revision#readme",
+  "bugs": {
+    "url": "https://github.com/morningstar004/Node_Revision/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/morningstar004/Node_Revision.git"
+  },
+  "license": "ISC",
+  "author": "Pranjal",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
