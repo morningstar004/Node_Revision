@@ -2,13 +2,13 @@ import mongoose, { Schema } from "mongoose";
 
 const postSchema = new Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
-      LowerCase: true,
+      lowercase: true,
       trim: true,
-      minlenght: 3,
-      maxLenght: 30,
+      minlength: 3,
+      maxlength: 30,
       unique: true,
     },
     description: {
