@@ -16,7 +16,7 @@ const createPost = async (req, res) => {
   }
 };
 
-//read post 
+//read post
 
 const getPosts = async (req, res) => {
   try {
@@ -25,18 +25,24 @@ const getPosts = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-}
+};
 
 //update post
 const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, description, age } = req.body;
-
-    if(!name || !description || !age) {
+    // if (Object.keys(req.body).length === 0){
+    //   return res.status(400).json({ message: "All fields are required" });
+    // }
+    if (!name || !description || !age) {
       return res.status(400).json({ message: "All fields are required" });
     }
-    const post = await Post.findByIdAndUpdate(id, { name, description, age }, { new: true });
+    const post = await Post.findByIdAndUpdate(
+      id,
+      { name, description, age },
+      { new: true },
+    );
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
@@ -44,5 +50,5 @@ const updatePost = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-}
+};
 export { createPost, getPosts, updatePost };
