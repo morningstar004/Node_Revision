@@ -59,9 +59,9 @@ const deletePost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ message: "Post does not exist" });
     }
-    res.status(200).json({ message: "Post deleted successfully"});
+    res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-}
+};
 export { createPost, getPosts, updatePost, deletePost };
