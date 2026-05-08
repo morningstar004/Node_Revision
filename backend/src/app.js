@@ -1,8 +1,11 @@
 import express from "express";
+import cors from "cors";
 import userRouter from "./routes/user_route.js";
 import PostRouter from "./routes/post_route.js";
 
 const app = express();
+// Enable CORS for all routes
+app.use(cors());
 // To parse incoming JSON data in the request body
 app.use(express.json());
 
