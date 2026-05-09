@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
@@ -9,7 +9,7 @@ const PostList = () => {
     const fetchPosts = async () => {
       try {
         // If you set up the proxy, use /api/posts. Otherwise, use full URL.
-        const response = await axios.get('http://localhost:5000/api/posts'); 
+        const response = await axios.get("http://localhost:5000/api/posts");
         setPosts(response.data);
         setLoading(false);
       } catch (error) {
@@ -26,8 +26,11 @@ const PostList = () => {
   return (
     <div>
       <h1>Blog Posts</h1>
-      {posts.map(post => (
-        <div key={post._id} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
+      {posts.map((post) => (
+        <div
+          key={post._id}
+          style={{ border: "1px solid #ccc", margin: "10px", padding: "10px" }}
+        >
           <h3>{post.title}</h3>
           <p>{post.content}</p>
         </div>
