@@ -9,7 +9,7 @@ const userSchema = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      minlenght: 3,
+      minlength: 3,
       maxlenght: 30,
     },
     email: {
@@ -37,6 +37,7 @@ userSchema.pre("save", async function () {
   if (!this.isModified("password")) {
     return;
   }
+  // Generate a salt and hash the password
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

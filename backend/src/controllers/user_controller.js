@@ -2,6 +2,7 @@ import { User } from "../models/user_model.js";
 
 const registerUser = async (req, res) => {
   try {
+    // Destructure the required fields from the request body
     const { username, email, password } = req.body;
 
     // Check if the user already exists
@@ -18,7 +19,6 @@ const registerUser = async (req, res) => {
     }
 
     // Create a new user
-
     const user = await User.create({
       username,
       email,
