@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import api from '../api/axios'
-import PostCard from '../components/PostCard'
+import PostCard from '../components/PostCard.jsx'
 
 export default function Posts() {
   const [posts, setPosts] = useState([])
