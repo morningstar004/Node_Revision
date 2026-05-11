@@ -1,6 +1,13 @@
 import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import app from "./app.js";
+// import cors from "cors";
+
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//   }),
+// );
 dotenv.config({
   path: "C:\\Users\\PRANJAL_01\\Downloads\\CodeFiles\\Node Revision\\backend\\.env",
 });

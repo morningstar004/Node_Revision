@@ -3,14 +3,14 @@ import bcrypt from "bcrypt";
 
 const userSchema = new Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
       trim: true,
       minlength: 3,
-      maxlenght: 30,
+      maxlength: 30,
     },
     email: {
       type: String,
@@ -29,19 +29,23 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-// hashing the password before docing the password to database
+// FIXED: Removed 'next' because the function is 'async'
 userSchema.pre("save", async function () {
-  if (!this.isModified("password")) {
-    return;
+  // Only hash the password if it has been modified (or is new)
+  if (!this.isModified("password")) return;
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  } catch (error) {
+    throw new Error(error); // Rethrow error to be caught by the controller
   }
-  // Generate a salt and hash the password
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
 });
-// compare the password for Login
+
+// Compare the password for Login
 userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
