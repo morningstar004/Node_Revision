@@ -10,12 +10,17 @@ const registerUser = async (req, res) => {
     }
 
     // 2. Check if the user already exists (using correct schema field: username)
-    const existingUser = await User.findOne({ 
-      $or: [{ email: email.toLowerCase() }, { username: username.toLowerCase() }] 
+    const existingUser = await User.findOne({
+      $or: [
+        { email: email.toLowerCase() },
+        { username: username.toLowerCase() },
+      ],
     });
-    
+
     if (existingUser) {
-      return res.status(400).json({ message: "User with this email or username already exists" });
+      return res
+        .status(400)
+        .json({ message: "User with this email or username already exists" });
     }
 
     // 3. Create a new user
@@ -46,12 +51,14 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
     // Check if the user exists
     const user = await User.findOne({ email: email.toLowerCase() });
-    
+
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
@@ -85,7 +92,9 @@ const logoutUser = async (req, res) => {
       message: "Logout successfully",
     });
   } catch (error) {
-    res.status(500).json({ message: `Internal Server Error: ${error.message}` });
+    res
+      .status(500)
+      .json({ message: `Internal Server Error: ${error.message}` });
   }
 };
 

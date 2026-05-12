@@ -29,7 +29,7 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // FIXED: Removed 'next' because the function is 'async'
