@@ -13,29 +13,40 @@ const ProtectedRoute = ({ children }) => {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <NavBar />
-      <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/posts"
-          element={
-            <ProtectedRoute>
-              <Posts />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="min-h-screen bg-slate-50 font-sans antialiased text-slate-900 selection:bg-indigo-100 selection:text-indigo-700">
+      <BrowserRouter>
+        {/* The Navbar is sticky, so we place it here */}
+        <NavBar />
+        
+        {/* Main Content Area */}
+        <main className="relative">
+          <Routes>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            
+            <Route
+              path="/posts"
+              element={
+                <ProtectedRoute>
+                  <Posts />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Default redirect for unknown paths */}
+            <Route path="*" element={<Navigate to="/login" />} />
+          </Routes>
+        </main>
+      </BrowserRouter>
+    </div>
   );
 }
