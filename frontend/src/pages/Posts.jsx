@@ -6,17 +6,24 @@ export default function Posts() {
   const [posts, setPosts] = useState([])
   const [form, setForm] = useState({ name: '', description: '', age: '' })
   const [error, setError] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const fetchPosts = async () => {
+  const fetchPosts = async (search = '') => {
     try {
-      const res = await api.get('/posts')
+      const res = await api.get('/posts', { params: { search } })
       setPosts(res.data)
     } catch (err) {
       console.error("Failed to fetch posts")
     }
   }
 
-  useEffect(() => { fetchPosts() }, [])
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      fetchPosts(searchTerm)
+    }, 300)
+
+    return () => clearTimeout(delayDebounceFn)
+  }, [searchTerm])
 
   const handleCreate = async (e) => {
     e.preventDefault()
@@ -24,7 +31,7 @@ export default function Posts() {
     try {
       await api.post('/posts/create', { ...form, age: Number(form.age) })
       setForm({ name: '', description: '', age: '' })
-      fetchPosts()
+      fetchPosts(searchTerm)
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create post')
     }
@@ -43,6 +50,32 @@ export default function Posts() {
           <div className="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full text-sm font-bold">
             {posts.length} {posts.length === 1 ? 'Post' : 'Posts'}
           </div>
+        </div>
+
+        {/* Search Bar Section */}
+        <div className="relative group">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <input 
+            type="text"
+            className="w-full bg-white border border-slate-200 pl-11 pr-4 py-4 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-sm placeholder:text-slate-400 text-slate-700"
+            placeholder="Search posts by name or description..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {searchTerm && (
+            <button 
+              onClick={() => setSearchTerm('')}
+              className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
         </div>
 
         {/* Create Post Form Card */}
@@ -113,14 +146,14 @@ export default function Posts() {
           {posts.length > 0 ? (
             <div className="grid gap-6">
               {posts.map(post => (
-                <PostCard key={post._id} post={post} onRefresh={fetchPosts} />
+                <PostCard key={post._id} post={post} onRefresh={() => fetchPosts(searchTerm)} />
               ))}
             </div>
           ) : (
             <div className="text-center py-20 bg-white rounded-[2rem] border border-dashed border-slate-200">
               <div className="text-4xl mb-4">📝</div>
-              <h4 className="text-slate-900 font-bold text-lg">No posts yet</h4>
-              <p className="text-slate-500">Be the first to share something with the community.</p>
+              <h4 className="text-slate-900 font-bold text-lg">{searchTerm ? 'No results found' : 'No posts yet'}</h4>
+              <p className="text-slate-500">{searchTerm ? `We couldn't find anything matching "${searchTerm}"` : 'Be the first to share something with the community.'}</p>
             </div>
           )}
         </div>

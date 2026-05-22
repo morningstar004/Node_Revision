@@ -15,12 +15,23 @@ const createPost = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
 //read post
 
 const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find();
+    const { search } = req.query;
+    let query = {};
+
+    if (search) {
+      query = {
+        $or: [
+          { name: { $regex: search, $options: "i" } },
+          { description: { $regex: search, $options: "i" } },
+        ],
+      };
+    }
+
+    const posts = await Post.find(query);
     res.status(200).json(posts);
   } catch (error) {
     res.status(400).json({ error: error.message });
